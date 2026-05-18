@@ -1,0 +1,73 @@
+<div class="container">
+  <header>
+    <h1>AI App Spec Generator</h1>
+    <p>Fill out the details below and our AI will dynamically generate a complete software specification for your project.</p>
+  </header>
+
+  <div class="main-content">
+    <!-- Input Form -->
+    <section class="form-section">
+      <form [formGroup]="appForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+          <label for="projectName">Project Name</label>
+          <input id="projectName" type="text" formControlName="projectName" placeholder="e.g., E-commerce Platform"
+                 [class.is-invalid]="appForm.get('projectName')?.invalid && appForm.get('projectName')?.touched">
+          <div class="error-text" *ngIf="appForm.get('projectName')?.invalid && appForm.get('projectName')?.touched">Project Name is required</div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">App Description</label>
+          <textarea id="description" formControlName="description" rows="3" placeholder="What does this app do?"
+                    [class.is-invalid]="appForm.get('description')?.invalid && appForm.get('description')?.touched"></textarea>
+          <div class="error-text" *ngIf="appForm.get('description')?.invalid && appForm.get('description')?.touched">Description is required</div>
+        </div>
+
+        <div class="form-group">
+          <label for="targetAudience">Target Audience</label>
+          <input id="targetAudience" type="text" formControlName="targetAudience" placeholder="e.g., Small business owners">
+        </div>
+
+        <div class="form-group">
+          <label for="keyFeatures">Key Features (Bullet points)</label>
+          <textarea id="keyFeatures" formControlName="keyFeatures" rows="5" placeholder="- User Authentication&#10;- Shopping Cart&#10;- Payment Gateway"
+                    [class.is-invalid]="appForm.get('keyFeatures')?.invalid && appForm.get('keyFeatures')?.touched"></textarea>
+          <div class="error-text" *ngIf="appForm.get('keyFeatures')?.invalid && appForm.get('keyFeatures')?.touched">Key Features are required</div>
+        </div>
+
+        <div class="form-group">
+          <label for="techStack">Technology Stack</label>
+          <input id="techStack" type="text" formControlName="techStack" placeholder="e.g., Java 21, Spring Boot, React, PostgreSQL">
+        </div>
+
+        <button type="submit" [disabled]="appForm.invalid || isLoading">
+          {{ isLoading ? 'Generating...' : 'Generate AI Document' }}
+        </button>
+      </form>
+    </section>
+
+    <!-- Output Section -->
+    <section class="output-section" *ngIf="generatedDocument">
+      <div class="output-header">
+        <h2>Generated Document</h2>
+        <div class="action-buttons">
+          <button class="action-btn copy-btn" (click)="copyToClipboard()">
+            <span class="icon">📋</span> Copy
+          </button>
+          <button class="action-btn download-btn" (click)="downloadPdf()" [disabled]="isPdfLoading">
+            <span class="icon">⬇</span> {{ isPdfLoading ? 'Loading...' : 'PDF' }}
+          </button>
+        </div>
+      </div>
+      
+      <!-- Rendered HTML Preview -->
+      <div class="markdown-preview rendered-content" *ngIf="renderedHtml" [innerHTML]="renderedHtml">
+      </div>
+      
+      <!-- Fallback Raw Preview -->
+      <div class="markdown-preview" *ngIf="!renderedHtml">
+        <pre class="markdown-output">{{ generatedDocument }}</pre>
+      </div>
+    </section>
+  </div>
+</div>
