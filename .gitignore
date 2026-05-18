@@ -20,5 +20,6 @@ frontend/*.log
 .docker/
 
 # Misc
+.env
 starter.tgz
 .DS_Store
