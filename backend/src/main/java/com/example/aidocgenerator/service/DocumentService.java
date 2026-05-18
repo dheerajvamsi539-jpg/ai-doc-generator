@@ -48,7 +48,7 @@ public class DocumentService {
                 request.techStack()
             );
             
-        // Call OpenAI to generate the actual specification document
+        // Call AI model to generate the actual specification document
         return chatClient.prompt()
                 .user(prompt)
                 .call()
